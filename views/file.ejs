@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>    
+    <div class="main w-full min-h-screen bg-zinc-900 flex justify-center items-center">
+        <div class="task mt-6  flex justify-between items-center bg-zinc-700 px-5 py-2 rounded-lg">
+            <div class="title">
+                <h1 class="text-2xl font-bold text-white"> <%= title.split(".")[0] %></h1>
+                <p class="text-white mt-2"><%= content %></p>
+                <a href="/" class="inline-block text-green-300 hover:text-green-500 mt-2 hover:underline ">Back to Home</a>
+                
+            </div>
+        </div>
+    </div>
+</body>     
+
+</html>
