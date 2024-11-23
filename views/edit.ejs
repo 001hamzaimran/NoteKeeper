@@ -8,16 +8,25 @@
 </head>
 
 <body>
-    <div class="main w-full min-h-screen bg-zinc-900 ">
-        <div class="form text-white px-10 py-10">
-            <form action="/edit" method="POST">
-                <input class="block px-5 bg-zinc-700 py-2 outline-none  w-full text-zinc-300 rounded-lg" type="text" readonly
-                    placeholder="Task Title" value='<%= title %>' name="prevtitle">
-                    
-                    <input class="block px-5 mt-6 bg-zinc-700 py-2 outline-none  w-full rounded-lg" type="text" placeholder="New Task Title" name="updatetitle">
+    <div class="main w-full min-h-screen bg-zinc-900 flex justify-center items-center">
+        <!-- Edit Task Form -->
+        <div class="form text-white px-8 py-10 bg-zinc-800 rounded-lg shadow-lg max-w-lg w-full">
+            <h1 class="text-3xl font-bold mb-6 text-center text-white">Edit Task</h1>
+            <form action="/edit" method="POST" class="space-y-4">
+                <!-- New Task Title Input -->
+                <input 
+                    class="block px-5 bg-zinc-700 py-3 outline-none w-full rounded-lg focus:ring-2 focus:ring-blue-500"
+                    type="text" placeholder="New Task Title" name="updatetitle" required>
 
-                <input type="submit" value="Update Task" class="inline-block mt-2 bg-blue-700 px-5 py-2 rounded-lg">
+                <!-- Task Description Input -->
+                <textarea 
+                    class="block px-5 bg-zinc-700 py-3 outline-none w-full rounded-lg focus:ring-2 focus:ring-blue-500"
+                    name="task" placeholder="Task Description" rows="5" required></textarea>
 
+                <!-- Update Task Button -->
+                <input 
+                    type="submit" value="Update Task" 
+                    class="w-full bg-blue-700 px-5 py-3 rounded-lg text-white font-bold hover:bg-blue-800 transition-colors">
             </form>
         </div>
     </div>

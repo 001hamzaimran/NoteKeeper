@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const fs = require("fs");
+const { log } = require("console");
 const port = 3000;
 
 app.set("view engine", "ejs");
@@ -20,37 +21,71 @@ app.get("/", (req, res) => {
   })
 });
 
+
+app.post("/create", (req, res) => {
+  fs.writeFile(`./files/${req.body.title.split(" ").join("-")}.txt`, req.body.task, (err) => {
+    res.redirect("/");
+    if (err) {
+      console.log(err);
+    }
+  })
+});
+
 app.get("/files/:title", (req, res) => {
-fs.readFile(`./files/${req.params.title}`, "utf-8", (err, data) => {
-  res.render("file", { title: req.params.title, content: data });
-})
+  fs.readFile(`./files/${req.params.title}`, "utf-8", (err, data) => {
+    res.render("file", { title: req.params.title, content: data });
+    if (err) {
+      console.log(err);
+    }
+  })
 });
 
 app.get("/edit/:title", (req, res) => {
+  
   fs.readFile(`./files/${req.params.title}`, "utf-8", (err, data) => {
-    res.render("edit",{title: req.params.title, content: data});
-    
+    res.render("edit", { title: req.params.title, content: data });
+    if (err) {
+      console.log(err);
+    }
+
   })
 })
 
 app.get("/delete/:title", (req, res) => {
-  fs.unlink(`./files/${req.params.title}`, (err)=>{
+  fs.unlink(`./files/${req.params.title}`, (err) => {
     res.redirect("/");
+    if (err) {
+      console.log(err);
+    }
   })
 })
 
-  app.post("/edit",(req,res)=>{
-    console.log(req.body);
-    fs.rename(`./files/${req.body.prevtitle}`, `./files/${req.body.updatetitle}`, (err)=>{
-      res.redirect("/");
-    })
-    
-  })
+app.post("/edit", (req, res) => {
+  console.log(req.body);
 
-app.post("/create", (req, res) => {
-  fs.writeFile(`./files/${req.body.title.split(" ").join("-")}.txt`, req.body.task, (err)=>{
-    res.redirect("/");
-  })
+  const oldFilePath = `./files/${req.headers.referer.split("/")[4]}`;
+  const newFilePath = `./files/${req.body.updatetitle.split(" ").join("-")}.txt`;
+
+  // Rename the file first
+  fs.rename(oldFilePath, newFilePath, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Error renaming the file");
+    }
+
+    // Update the content of the renamed file
+    fs.writeFile(newFilePath, req.body.task, (err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("Error updating the file content");
+      }
+
+      res.redirect("/");
+    });
+  });
 });
+
+
+
 
 app.listen(port);
